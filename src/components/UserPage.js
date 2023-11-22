@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const UserPage = () => {
-  const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState([]);   
   const [emprunter, setEmprunter] = useState(false);
 
   const handleEmprunterClick = (bookId, bookTitle) => {
@@ -44,8 +44,10 @@ const UserPage = () => {
         });
 
         setBooks(booksData);
+        console.log('Recuperation reussie')
       } catch (error) {
         console.error('Erreur: ', error);
+        console.log('Echec')
       }
     };
 
@@ -54,8 +56,9 @@ const UserPage = () => {
 
   return (
     <div>
+              <ToastContainer />
+
       <h2>User Page</h2>
-      <ToastContainer />
       <div className="card-container">
         {books.map((book) => (
           <div key={book.id} className="card">
