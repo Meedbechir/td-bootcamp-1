@@ -9,8 +9,15 @@ const Register = ({setIsAuthenticated}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [nom, setNom] = useState('');
+
 
     const navigate = useNavigate();
+
+    const handleNomChange = (e) => {
+      setNom(e.target.value);
+    };
+    
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
@@ -42,11 +49,13 @@ const Register = ({setIsAuthenticated}) => {
       await addDoc(collection(db, 'users'), {
         email: email,
         userId: user.uid,
+        nom: nom
       });
 
       setIsAuthenticated(true);
       navigate('/login')
         
+        setNom("");
         setEmail("");
         setPassword("");
         setConfirmPassword("");
@@ -58,7 +67,13 @@ const Register = ({setIsAuthenticated}) => {
   return (
     <div>
             <form onSubmit={handleRegistration}>
+
                 <h1>Regiter form</h1>
+      <div class="mb-3">
+            <label for="exampleInputNom" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="exampleInputNom" onChange={handleNomChange} autoComplete='off' />
+      </div>
+
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
         <input type="email" class="form-control" id="exampleInputEmail1"  onChange={handleEmailChange} autoComplete='off'/>

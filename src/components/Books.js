@@ -12,6 +12,7 @@ const Dashboard = () => {
     title: '',
     author: '',
     description: '',
+    imageUrl: '',
   });
 
   useEffect(() => {
@@ -73,6 +74,7 @@ const Dashboard = () => {
         title: '',
         author: '',
         description: '',
+        imageUrl: ''
       });
 
       setBooks([...books, { id: docRef.id, ...newBook }]);
@@ -162,6 +164,19 @@ const Dashboard = () => {
                     value={newBook.description}
                     onChange={handleInputChange}
                   ></textarea>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="imageUrl" className="form-label">
+                    URL de l'image
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="imageUrl"
+                    name="imageUrl"
+                    value={newBook.imageUrl}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </form>
             </div>

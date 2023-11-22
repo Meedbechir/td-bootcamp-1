@@ -1,11 +1,13 @@
 import './App.css';
 import Login from './components/Login';
 import Register from './components/Register';
-import { signOut } from 'firebase/auth';
-import { auth } from './config/firebase';
+// import { signOut } from 'firebase/auth';
+// import { auth } from './config/firebase';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/Books';
+import Users from './components/Users';
 import { useState } from 'react';
+import UserPage from './components/UserPage';
 
 
 function App() {
@@ -26,7 +28,8 @@ function App() {
         <Routes> 
           <Route path='/' element={<Register setIsAuthenticated={setIsAuthenticated} />} />
           <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated}/>} />
-          <Route path='/dashboard' element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
+          <Route path='/users' element={<Users setIsAuthenticated={setIsAuthenticated}/>} />
+          <Route path='/dashboard' element={isAuthenticated ? <UserPage /> : <Navigate to="/login" />} />
         </Routes>  
       {/* <button class="btn btn-outline-danger mt-5" onClick={handleSignOut}>Deconnexion</button>   */}
     </div>
