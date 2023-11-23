@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {  FaEye, FaTrash } from 'react-icons/fa';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { Link } from 'react-router-dom';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -27,9 +28,24 @@ const Users = () => {
     fetchUsers();
   }, []);
 
+  const handleDeleteUser = async (userId) => {
+    try {
+      await deleteDoc(doc(db, 'users', userId));
+    } catch (error) {
+      console.error('Error', error);
+    }
+
+    const updatedBooks = users.filter((user) => user.id !== userId);
+    setUsers(updatedBooks);
+  };
+
+
   return (
     <div className='container'>
-        <h1>Liste des eleves</h1>
+        <h1>Liste des users</h1>
+        <p>
+           <Link to='/dashboard'>Retour</Link>
+        </p>
       <div className="row">
         <div className="mt-4">
           <table className='table'>
@@ -48,8 +64,7 @@ const Users = () => {
                   <td>{user.nom}</td>
                   <td>{user.email}</td>
                   <td>
-                    <FaEye color='blue' className='mx-1' size={25} /> 
-                    <FaTrash color='red' size={25} />
+                    <FaTrash onClick={() => handleDeleteUser(user.id)} color='red' size={25} />
                   </td>
                 </tr>
               ))}
