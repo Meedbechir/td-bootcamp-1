@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {  FaEye, FaTrash } from 'react-icons/fa';
+import {  FaTrash } from 'react-icons/fa';
 import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Link } from 'react-router-dom';

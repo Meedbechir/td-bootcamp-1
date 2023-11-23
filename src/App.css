@@ -11,4 +11,7 @@
     box-sizing: border-box;
     margin-bottom: 16px;
   }
-  
+
+  @import "rsuite/dist/rsuite.css";
+
+#root{ padding: 10px; }
