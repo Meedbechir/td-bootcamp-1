@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { FaEye, FaTrash } from 'react-icons/fa';
 import { addDoc, collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
@@ -66,6 +69,12 @@ const Dashboard = () => {
   };
 
   const handleAddBook = async () => {
+
+    if (!newBook.title || !newBook.author || !newBook.description || !newBook.imageUrl) {
+      toast.warning("Veuillez remplir tous les champs.");
+      return;
+    }
+
     try {
       const docRef = await addDoc(collection(db, 'books'), newBook);
 
@@ -97,7 +106,14 @@ const Dashboard = () => {
 
   return (
     <div className='container'>
+      <ToastContainer />
       <h1>Liste des Livres</h1>
+      <p><Link to="/users">
+      Voir les utilisateurs
+      </Link></p>
+      <p><Link to="/livreemp">
+      Voir les livres archivés
+      </Link></p>
       <div className="mt-3 text-end">
         <button className="btn btn-primary" onClick={handleShowModal}>
           Ajouter
@@ -175,7 +191,7 @@ const Dashboard = () => {
                     id="imageUrl"
                     name="imageUrl"
                     value={newBook.imageUrl}
-                    onChange={handleInputChange}
+                    onChange={handleInputChange}  
                   />
                 </div>
               </form>
