@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { FaEye, FaTrash } from 'react-icons/fa';
+import { FaBoxArchive } from 'react-icons/fa6';
 import { addDoc, collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
+import { Drawer, ButtonToolbar, Button } from 'rsuite';
+import { IoNotificationsOutline } from "react-icons/io5";
+
+
 
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
@@ -13,7 +21,10 @@ const Dashboard = () => {
     author: '',
     description: '',
     imageUrl: '',
+    archived: false,
   });
+
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -66,6 +77,12 @@ const Dashboard = () => {
   };
 
   const handleAddBook = async () => {
+
+    if (!newBook.title || !newBook.author || !newBook.description || !newBook.imageUrl) {
+      toast.warning("Veuillez remplir tous les champs.");
+      return;
+    }
+
     try {
       const docRef = await addDoc(collection(db, 'books'), newBook);
 
@@ -95,9 +112,31 @@ const Dashboard = () => {
     setBooks(updatedBooks);
   };
 
+ 
+
   return (
     <div className='container'>
+
+      <ToastContainer />
       <h1>Liste des Livres</h1>
+      <p><Link to="/users">
+      Voir les utilisateurs
+      </Link></p>
+      <ButtonToolbar>
+        <Button onClick={() => setOpen(true)}><IoNotificationsOutline size={30} /></Button>
+      </ButtonToolbar>
+
+      <Drawer size='xs'  open={open} onClose={() => setOpen(false)}>
+        <Drawer.Body>
+        <h2>Historique</h2>
+        <ul>
+          <li> <strong> MERN</strong></li>
+          <li> <strong>Laravel</strong> </li>
+          <li> <strong>Bootstrap</strong> </li>
+        </ul>
+        </Drawer.Body>
+      </Drawer>
+
       <div className="mt-3 text-end">
         <button className="btn btn-primary" onClick={handleShowModal}>
           Ajouter
@@ -175,7 +214,7 @@ const Dashboard = () => {
                     id="imageUrl"
                     name="imageUrl"
                     value={newBook.imageUrl}
-                    onChange={handleInputChange}
+                    onChange={handleInputChange}  
                   />
                 </div>
               </form>
@@ -244,7 +283,7 @@ const Dashboard = () => {
           </thead>
           <tbody>
             {books.map((book) => (
-              <tr key={book.id}>
+              <tr key={book.id} className={book.archivé ? 'archived-row' : ''}>
                 <td>{book.id}</td>
                 <td>{book.title}</td>
                 <td>{book.author}</td>
@@ -264,7 +303,7 @@ const Dashboard = () => {
                     onClick={() => handleDeleteBook(book.id)}
                     style={{ cursor: 'pointer' }}
                   />
-                </td>
+                  </td> 
               </tr>
             ))}
           </tbody>
